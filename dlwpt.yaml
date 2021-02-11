@@ -1,0 +1,18 @@
+# install with conda env create -f dlwpt.yaml
+
+name: dlwpt
+channels:
+  - conda-forge
+  - defaults
+  - pytorch
+dependencies:
+  - python=3.7
+  - pandas
+  - matplotlib
+  - plotly
+  - scikit-learn
+  - torchvision
+  - pytorch
+  - pip
+  - pip:
+    - torch-summary

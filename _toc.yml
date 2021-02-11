@@ -1,0 +1,19 @@
+- file: README
+  numbered: false
+
+- part: Chapters
+  chapters:
+  - file: chapters/chapter1_gradient-descent
+  - file: chapters/chapter2_stochastic-gradient-descent
+  - file: chapters/chapter3_pytorch-neural-networks-pt1
+  - file: chapters/chapter4_neural-networks-pt2
+  - file: chapters/chapter5_cnns-pt1
+  - file: chapters/chapter6_cnns-pt2
+  - file: chapters/chapter7_advanced-deep-learning
+  
+- part: Appendices
+  chapters:
+  - file: chapters/appendixA_gradients
+  - file: chapters/appendixB_logistic-loss
+  - file: chapters/appendixC_computing-derivatives
+  - file: chapters/appendixD_bitmoji-CNN
