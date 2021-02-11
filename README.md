@@ -2,14 +2,11 @@
 
 **By [Tomas Beuzen](https://www.tomasbeuzen.com/) 🚀**
 
-Welcome to Deep Learning with PyTorch! With this website I aim to provide an introduction to optimization, neural networks and deep learning using PyTorch. We will progressively build up our knowledge starting with understanding optimization algorithms like gradient descent, to building fully connected neural network, convolutional neural networks for image classification, and even creating generative adversarial networks (GANs) for synthetic image generation!
+Welcome to Deep Learning with PyTorch! With this [website](https://www.tomasbeuzen.com/deep-learning-with-pytorch/README.html) I aim to provide an introduction to optimization, neural networks and deep learning using PyTorch. We will progressively build up our knowledge starting with understanding optimization algorithms like gradient descent, to building fully connected neural network, convolutional neural networks for image classification, and even creating generative adversarial networks (GANs) for synthetic image generation!
 
-```{figure} docs/logo.png
----
-height: 250px
-name: DLwPT
----
-```
+<p align="center">
+  <img src="docs/logo.png" width="260">
+</p>
 
 ```{admonition} Attribution
 The content of this site is adapted from material I used to teach the 2020/2021 offering of the course "DSCI 572 Supervised Learning II" for the University of British Columbia's Master of Data Science Program. That material has built upon previous course material developed by [Mike Gelbart](https://www.mikegelbart.com/). A big thank you also goes to [Aaron Berk](https://aaronberk.ca/) who helped transition the course from Tensorflow to PyTorch.
