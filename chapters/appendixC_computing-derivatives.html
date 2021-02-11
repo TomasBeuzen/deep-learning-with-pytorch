@@ -1,0 +1,894 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appendix C: Computing Derivatives &#8212; Deep Learning with PyTorch</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Appendix D: Creating a CNN to Predict Bitmojis" href="appendixD_bitmoji-CNN.html" />
+    <link rel="prev" title="Appendix B: Logistic Loss" href="appendixB_logistic-loss.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Deep Learning with PyTorch</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../README.html">
+   Deep Learning with PyTorch
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Chapters
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="chapter1_gradient-descent.html">
+   Chapter 1: Optimization &amp; Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chapter2_stochastic-gradient-descent.html">
+   Chapter 2: Stochastic Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chapter3_pytorch-neural-networks-pt1.html">
+   Chapter 3: Introduction to Pytorch &amp; Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chapter4_neural-networks-pt2.html">
+   Chapter 4: Training Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chapter5_cnns-pt1.html">
+   Chapter 5: Introduction to Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chapter6_cnns-pt2.html">
+   Chapter 6: Advanced Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chapter7_advanced-deep-learning.html">
+   Chapter 7: Advanced Deep Learning
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Appendices
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="appendixA_gradients.html">
+   Appendix A: Gradients Review
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="appendixB_logistic-loss.html">
+   Appendix B: Logistic Loss
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Appendix C: Computing Derivatives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="appendixD_bitmoji-CNN.html">
+   Appendix D: Creating a CNN to Predict Bitmojis
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <a href="https://www.tomasbeuzen.com/">Tomas Beuzen</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/chapters/appendixC_computing-derivatives.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/TomasBeuzen/deep-learning-with-pytorch"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/TomasBeuzen/deep-learning-with-pytorch/main?urlpath=tree/chapters/appendixC_computing-derivatives.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gradients-introduction">
+   1. Gradients Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#symbolic-differentiation">
+   2. Symbolic Differentiation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#numerical-differentiation-finite-differences">
+   3. Numerical Differentiation (Finite Differences)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#error-of-derivative-estimates">
+     3.1. Error of Derivative Estimates
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gradients">
+     3.2. Gradients
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cost-of-estimating-a-gradient">
+     3.3. Cost of Estimating a Gradient
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optional-other-finite-difference-formulas">
+     3.4. (Optional) Other Finite Difference Formulas
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summary">
+     3.5. Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#automatic-differentiation">
+   4. Automatic Differentiation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#do-i-never-need-to-take-a-derivative-again">
+     4.1. Do I Never Need to Take a Derivative Again?
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><img alt="" src="../_images/banner.png" /></p>
+<div class="section" id="appendix-c-computing-derivatives">
+<h1>Appendix C: Computing Derivatives<a class="headerlink" href="#appendix-c-computing-derivatives" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="kn">import</span> <span class="nn">sklearn.linear_model</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span>
+<span class="kn">import</span> <span class="nn">autograd</span> <span class="c1"># pip install autograd</span>
+<span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">grad</span>
+<span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">anp</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;axes.labelweight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="s1">&#39;figure.figsize&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="gradients-introduction">
+<h2>1. Gradients Introduction<a class="headerlink" href="#gradients-introduction" title="Permalink to this headline">¶</a></h2>
+<hr><p>What if we are optimizing a function and we don’t know its derivative/gradient. This could happen because:</p>
+<ul class="simple">
+<li><p>You’re optimizing the parameters of a computer simulation</p>
+<ul>
+<li><p>a robot</p></li>
+<li><p>weather / atmospheric science</p></li>
+<li><p>financial simulation</p></li>
+<li><p>etc.</p></li>
+</ul>
+</li>
+<li><p>You’re optimizing the hyperparameters of a machine learning algorithm</p></li>
+<li><p>The derivative is just too much effort to compute and it’s slowing down your prototyping efforts</p></li>
+</ul>
+<p>What to do? Well, there are 3 main approaches to computing derivatives with a computer:</p>
+<ol class="simple">
+<li><p>Symbolic differentiation</p></li>
+<li><p>Numerical differentiation</p></li>
+<li><p>Automatic differentiation</p></li>
+</ol>
+<p>We’ll explore these different options in this short appendix. Note that this material has been modified after material originally created by <a class="reference external" href="https://www.mikegelbart.com/">Mike Gelbart</a>.</p>
+<p>As a running example, consider <span class="math notranslate nohighlight">\(f(x)=\sin(x)\)</span>. We know that <span class="math notranslate nohighlight">\(f'(x)\equiv\frac{df(x)}{dx}=\cos(x)\)</span> and thus <span class="math notranslate nohighlight">\(f'(1)=\cos(1)\)</span></p>
+</div>
+<div class="section" id="symbolic-differentiation">
+<h2>2. Symbolic Differentiation<a class="headerlink" href="#symbolic-differentiation" title="Permalink to this headline">¶</a></h2>
+<hr><p>Symbolic differentiation is basically what you learned in calculus. We interpret the symbols in an equation and apply the rules of differentiation. Wolfram Alpha is a good tool for this, e.g., <a class="reference external" href="https://www.wolframalpha.com/input/?i=derivative+of+sin(x)">https://www.wolframalpha.com/input/?i=derivative+of+sin(x)</a>.</p>
+<p>Symbolic differentiation is useful but less so when dealing with data. We will not say more about this now. You should be aware of its existence.</p>
+</div>
+<div class="section" id="numerical-differentiation-finite-differences">
+<h2>3. Numerical Differentiation (Finite Differences)<a class="headerlink" href="#numerical-differentiation-finite-differences" title="Permalink to this headline">¶</a></h2>
+<hr><p>A derivative is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\frac{df(x)}{dx} \equiv \lim_{h\rightarrow 0} \frac{f(x+h)-f(x)}{h} \]</div>
+<p>Numerical differentiation simply approximates the above using a very small <span class="math notranslate nohighlight">\(h\)</span>:</p>
+<p>$<span class="math notranslate nohighlight">\(\frac{df(x)}{dx} \approx \frac{f(x+h)-f(x)}{h}\)</span><span class="math notranslate nohighlight">\( for small \)</span>h$.</p>
+<p>This approach is called “finite differences”. I like to think of it as an estimate of as the “rise over run” estimate of slope. Let’s give it a try!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="mf">0.001</span>  <span class="c1"># small h</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">dfdx</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">))</span> <span class="o">/</span> <span class="n">h</span>
+<span class="n">dfdx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5398814803603269
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5403023058681398
+</pre></div>
+</div>
+</div>
+</div>
+<p>Not bad!</p>
+<div class="section" id="error-of-derivative-estimates">
+<h3>3.1. Error of Derivative Estimates<a class="headerlink" href="#error-of-derivative-estimates" title="Permalink to this headline">¶</a></h3>
+<p>Numerical error arises from the <em>discretization</em> inherent finite difference approximations. Let’s explore this a bit. What do you think will happen to the absolute error of the estimate of the derivative if I change <span class="math notranslate nohighlight">\(h\)</span>?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">dfdx_estimate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">h</span><span class="p">:</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">))</span> <span class="o">/</span> <span class="n">h</span>
+<span class="n">dfdx_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+<span class="n">abs_error</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">h</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dfdx_estimate</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="n">dfdx_true</span><span class="p">)</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">abs_error</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error of derivative estimate&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/appendixC_computing-derivatives_14_0.png" src="../_images/appendixC_computing-derivatives_14_0.png" />
+</div>
+</div>
+<p>The above plot says that the error between our estimate and the true derivative grows as <span class="math notranslate nohighlight">\(h\)</span> gets bigger. Makes sense, right? But the plot thickens when we look at very small values of <span class="math notranslate nohighlight">\(h\)</span>…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">abs_error</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error of derivative estimate&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/appendixC_computing-derivatives_16_0.png" src="../_images/appendixC_computing-derivatives_16_0.png" />
+</div>
+</div>
+<p>Wait… what?</p>
+<p>When <span class="math notranslate nohighlight">\(h\ll 1\)</span> we have that <span class="math notranslate nohighlight">\(\left| f(x+h)-f(x) \right| \ll 1\)</span>. This leads to <em>roundoff errors</em>. Is it underflow?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">abs_error</span><span class="p">(</span><span class="n">h</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/appendixC_computing-derivatives_18_0.png" src="../_images/appendixC_computing-derivatives_18_0.png" />
+</div>
+</div>
+<p>Well that flat part is underflow (estimate of the derivative is exactly zero). But what’s up with the part in between, from <span class="math notranslate nohighlight">\(h=10^{-16}\)</span> to <span class="math notranslate nohighlight">\(10^{-7}\)</span>?</p>
+<p>The problem is regular old roundoff error related to floating point number precision. Roughly speaking, the magnitude of these roundoff errors is independent of <span class="math notranslate nohighlight">\(h\)</span> (e.g. when computing <span class="math notranslate nohighlight">\(f(x)\)</span> it has nothing to do with <span class="math notranslate nohighlight">\(h\)</span>), and so the <span class="math notranslate nohighlight">\(h\)</span> in the denominator causes <span class="math notranslate nohighlight">\(\frac{1}{h}\)</span>-like behavior. We can test this with a line, using our friend <span class="math notranslate nohighlight">\(10^{-16}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">abs_error</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mf">1e-16</span> <span class="o">*</span> <span class="n">dfdx_true</span> <span class="o">/</span> <span class="n">h</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/appendixC_computing-derivatives_20_0.png" src="../_images/appendixC_computing-derivatives_20_0.png" />
+</div>
+</div>
+<p>We’ve seen a bunch of plots, but what have we actually learned? Well:</p>
+<ul class="simple">
+<li><p>the <em>numerical approximation</em> to the derivative initially increases as <span class="math notranslate nohighlight">\(h\)</span> gets smaller (this effect is linear in <span class="math notranslate nohighlight">\(h\)</span>)</p></li>
+<li><p>however, when <span class="math notranslate nohighlight">\(h\)</span> is too small then roundoff error kicks in and the error starts to increase (this effect is linear in <span class="math notranslate nohighlight">\(1/h\)</span>)</p></li>
+</ul>
+<p>What you really need to know: picking <span class="math notranslate nohighlight">\(h\)</span> is tricky: it can’t be too big or too small.</p>
+</div>
+<div class="section" id="gradients">
+<h3>3.2. Gradients<a class="headerlink" href="#gradients" title="Permalink to this headline">¶</a></h3>
+<p>So, what about gradients?</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla f(x) = \begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \frac{\partial f}{\partial x_2} \\ \vdots \\ \frac{\partial f}{\partial x_d} \end{bmatrix}\end{split}\]</div>
+<p>Well, we can approximate each partial derivative as:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial f(x)}{\partial x_1} \approx \frac{f(x+h e_1)-f(x)}{h}\]</div>
+<p>where <span class="math notranslate nohighlight">\(e_1 = \begin{bmatrix}1 \\ 0 \\ 0 \\ \vdots \\ 0 \end{bmatrix}\)</span>.</p>
+<p>In general, $<span class="math notranslate nohighlight">\(\frac{\partial f(x)}{\partial x_j} \approx \frac{f(x+h e_j)-f(x)}{h}\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(e_j\)</span> is <span class="math notranslate nohighlight">\(1\)</span> at position <span class="math notranslate nohighlight">\(j\)</span> and zero elsewhere.</p>
+<p>Put another way (if this helps),</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial f(x)}{\partial x_1} \approx \frac{f\left(\begin{bmatrix}x_1 + h \\ x_2 \\ x_3 \\ \vdots \\ x_d \end{bmatrix} \right)-f(x)}{h}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial f(x)}{\partial x_2} \approx \frac{f\left(\begin{bmatrix}x_1 \\ x_2 + h \\ x_3 \\ \vdots \\ x_d \end{bmatrix} \right)-f(x)}{h}\end{split}\]</div>
+<p>And so on and so forth.</p>
+</div>
+<div class="section" id="cost-of-estimating-a-gradient">
+<h3>3.3. Cost of Estimating a Gradient<a class="headerlink" href="#cost-of-estimating-a-gradient" title="Permalink to this headline">¶</a></h3>
+<p>As you can see above, estimating a gradient requires <span class="math notranslate nohighlight">\(d+1\)</span> function evaluations. That can be expensive - perhaps <span class="math notranslate nohighlight">\(d\)</span> is <span class="math notranslate nohighlight">\(1000\)</span> or <span class="math notranslate nohighlight">\(10000\)</span>. If you can compute the gradient symbolically, that is much better.</p>
+</div>
+<div class="section" id="optional-other-finite-difference-formulas">
+<h3>3.4. (Optional) Other Finite Difference Formulas<a class="headerlink" href="#optional-other-finite-difference-formulas" title="Permalink to this headline">¶</a></h3>
+<p>There are better finite differences formulas than the one we are using, such as the centered difference formula:</p>
+<div class="math notranslate nohighlight">
+\[\frac{df(x)}{dx} \approx \frac{f(x+h)-f(x-h)}{2h}\]</div>
+<p>In this case the error goes down as <span class="math notranslate nohighlight">\(h^2\)</span>, which is great, but most of the benefits come in applications that don’t concern us here (e.g., solving differential equations). However, in <span class="math notranslate nohighlight">\(d\)</span> dimensions, this requires <span class="math notranslate nohighlight">\(2d\)</span> evaluations of the function instead of <span class="math notranslate nohighlight">\(d+1\)</span>, because with the forward difference formula (the original one above) we reuse the point <span class="math notranslate nohighlight">\(f(x)\)</span> for all the partial derivatives. Really, which formula you use depends on what you’re doing.</p>
+<p>If you’re really bored, you can also check out the <a class="reference external" href="https://timvieira.github.io/blog/post/2014/08/07/complex-step-derivative/">complex step method</a>.</p>
+</div>
+<div class="section" id="summary">
+<h3>3.5. Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
+<p>If we can’t figure out the derivative of a function, but have code that computes the function, we can <em>approximate</em> the derivative using finite differences. This works pretty well but there are some pitfalls. In particular you need to choose <span class="math notranslate nohighlight">\(h\)</span> carefully and it costs <span class="math notranslate nohighlight">\(O(d)\)</span> function evaluations to estimate a gradient. It seems better to actually know the derivative if possible, because the computations will be faster and more accurate.</p>
+</div>
+</div>
+<div class="section" id="automatic-differentiation">
+<h2>4. Automatic Differentiation<a class="headerlink" href="#automatic-differentiation" title="Permalink to this headline">¶</a></h2>
+<hr><p>Automatic differentiation (AD) is another way to take the derivative given some code that computes <span class="math notranslate nohighlight">\(f\)</span>. It is advertised as the “best of both worlds” between symbolic and numerical differentiation:</p>
+<ul class="simple">
+<li><p>Pro: takes the code as input, not math.</p></li>
+<li><p>Pro: does not have the problem of choosing <span class="math notranslate nohighlight">\(h\)</span>, or the extra <span class="math notranslate nohighlight">\(O(d)\)</span> cost.</p></li>
+<li><p>Con: some AD software packages have limitations, hurt code readability.</p></li>
+<li><p>Con: large space complexity.</p></li>
+</ul>
+<p>There are two main types of AD, <em>forward mode</em> and <em>reverse mode</em> AD. We’ll be discussing reverse mode here. Basically, AD keeps track of the gradient of primitive operations and uses the chain rule to link them together. We’ll use a package called <code class="docutils literal notranslate"><span class="pre">AutoGrad</span></code> to demo AD.</p>
+<p>Demonstration 1: <span class="math notranslate nohighlight">\(\sin(x)\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">anp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5403023058681398
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grad</span><span class="p">(</span><span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">)(</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5403023058681398
+</pre></div>
+</div>
+</div>
+</div>
+<p>What happened above is that AutoGrad’s <code class="docutils literal notranslate"><span class="pre">grad</span></code> takes in a Python function, and returns another Python function that computes the gradient.</p>
+<p>Some more examples:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">foo_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1">## SOLUTION</span>
+
+<span class="n">foo_grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1., 1., 1.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">foo_grad_AD</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">foo_grad_AD</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1., 1., 1.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pin</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">pin_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1">## SOLUTION</span>
+    <span class="n">grad</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">grad</span>
+
+<span class="n">pin_grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.       , 0.9779244, 0.       , 0.       ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pin_grad_AD</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+<span class="n">pin_grad_AD</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.       , 0.9779244, 0.       , 0.       ])
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see above, Autograd knows how to deal with things like <code class="docutils literal notranslate"><span class="pre">np.sum</span></code>, <code class="docutils literal notranslate"><span class="pre">np.abs</span></code>, subtraction, addition, etc. But let’s make sure it wasn’t cheating and just doing numerical differentiation!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pin</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Evaluated function!&quot;</span><span class="p">)</span> <span class="c1"># let us know what it&#39;s doing</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">pin_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1">## SOLUTION</span>
+    <span class="n">grad</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">grad</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If it were doing numerical differentiation, it would need to evaluation the function <span class="math notranslate nohighlight">\(d+1\)</span> times (5 times in this case), like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">approx_fprime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="c1"># do numerical differentiation</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Evaluated function!
+Evaluated function!
+Evaluated function!
+Evaluated function!
+Evaluated function!
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.       , 0.9779243, 0.       , 0.       ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pin_grad_AD</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span> <span class="c1"># automatic differentiation</span>
+<span class="n">pin_grad_AD</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Evaluated function!
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.       , 0.9779244, 0.       , 0.       ])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Looks like it’s not doing numerical differentiation! Bam!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">baz</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="n">i</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">def</span> <span class="nf">baz_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">## SOLUTION</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="n">baz_grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0, 1.0, 0.8561805793442914, 0.008334506453204469]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">baz_grad_AD</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">baz</span><span class="p">)</span> <span class="c1"># differentiate through `for` loops!</span>
+<span class="n">baz_grad_AD</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.        , 1.        , 0.85618058, 0.00833451])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">anp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">anp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">bar_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">anp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1">## SOLUTION</span>
+        <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x</span>
+        <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">anp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="n">bar_grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.09518376, -1.13930008,  0.        ,  0.        ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bar_grad_AD</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span> <span class="c1"># differentiate through `if` statements!</span>
+<span class="n">bar_grad_AD</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.09518376, -1.13930008,  0.        ,  0.        ])
+</pre></div>
+</div>
+</div>
+</div>
+<p>As an additional demo, let’s try robust regression with the Huber loss (whose derivative I don’t really feel like dealing with):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># generate random data</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="n">w_true</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">w_true</span>
+<span class="c1"># add random outliers</span>
+<span class="n">Noutliers</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">y</span><span class="p">[:</span><span class="n">Noutliers</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">Noutliers</span><span class="p">)</span>
+<span class="n">w_true</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.58231171, -0.07432767, -0.44828741, -0.16104079, -1.9348398 ,
+        1.1971574 ,  1.54178319, -0.07784519,  1.86594288, -0.56552392])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">HuberRegressor</span>
+
+<span class="n">hr</span> <span class="o">=</span> <span class="n">HuberRegressor</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">coef_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.58231172, -0.07432767, -0.44828741, -0.16104082, -1.93483981,
+        1.19715741,  1.5417832 , -0.07784521,  1.86594288, -0.56552394])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">huber</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">anp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">anp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">anp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">anp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">huber</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">w</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay here we go:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_dw</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="c1"># differentiate through matrix multiplications, etc.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="k">while</span> <span class="n">anp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">df_dw</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">0.0001</span><span class="p">:</span>
+    <span class="n">w</span> <span class="o">-=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df_dw</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+<span class="n">w</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.58501101, -0.07144062, -0.4559222 , -0.15739645, -1.94802414,
+        1.18996671,  1.52951647, -0.08104441,  1.8759754 , -0.56918479])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nice! (They are not exactly the same because of <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> hyperparameter in <code class="docutils literal notranslate"><span class="pre">HuberRegressor</span></code>.)</p>
+<div class="section" id="do-i-never-need-to-take-a-derivative-again">
+<h3>4.1. Do I Never Need to Take a Derivative Again?<a class="headerlink" href="#do-i-never-need-to-take-a-derivative-again" title="Permalink to this headline">¶</a></h3>
+<p>Hopefully not? There are production-grade automatic differentiation systems, like those used in TensorFlow or PyTorch so you may never have to worry about taking a derivative ever again.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-mds572-py"
+        },
+        kernelOptions: {
+            kernelName: "conda-env-mds572-py",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-mds572-py'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="appendixB_logistic-loss.html" title="previous page">Appendix B: Logistic Loss</a>
+    <a class='right-next' id="next-link" href="appendixD_bitmoji-CNN.html" title="next page">Appendix D: Creating a CNN to Predict Bitmojis</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Tomas Beuzen<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
