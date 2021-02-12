@@ -394,7 +394,9 @@
 <div class="math notranslate nohighlight">
 \[\frac{df(x)}{dx} \equiv \lim_{h\rightarrow 0} \frac{f(x+h)-f(x)}{h} \]</div>
 <p>Numerical differentiation simply approximates the above using a very small <span class="math notranslate nohighlight">\(h\)</span>:</p>
-<p>$<span class="math notranslate nohighlight">\(\frac{df(x)}{dx} \approx \frac{f(x+h)-f(x)}{h}\)</span><span class="math notranslate nohighlight">\( for small \)</span>h$.</p>
+<div class="math notranslate nohighlight">
+\[\frac{df(x)}{dx} \approx \frac{f(x+h)-f(x)}{h}\]</div>
+<p>for small <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <p>This approach is called “finite differences”. I like to think of it as an estimate of as the “rise over run” estimate of slope. Let’s give it a try!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -503,7 +505,9 @@
 <div class="math notranslate nohighlight">
 \[\frac{\partial f(x)}{\partial x_1} \approx \frac{f(x+h e_1)-f(x)}{h}\]</div>
 <p>where <span class="math notranslate nohighlight">\(e_1 = \begin{bmatrix}1 \\ 0 \\ 0 \\ \vdots \\ 0 \end{bmatrix}\)</span>.</p>
-<p>In general, $<span class="math notranslate nohighlight">\(\frac{\partial f(x)}{\partial x_j} \approx \frac{f(x+h e_j)-f(x)}{h}\)</span>$</p>
+<p>In general:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial f(x)}{\partial x_j} \approx \frac{f(x+h e_j)-f(x)}{h}\]</div>
 <p>where <span class="math notranslate nohighlight">\(e_j\)</span> is <span class="math notranslate nohighlight">\(1\)</span> at position <span class="math notranslate nohighlight">\(j\)</span> and zero elsewhere.</p>
 <p>Put another way (if this helps),</p>
 <div class="math notranslate nohighlight">

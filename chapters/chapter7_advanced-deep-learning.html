@@ -357,7 +357,7 @@
 <p><img alt="" src="../_images/force.png" /></p>
 <div class="section" id="chapter-outline">
 <h2>Chapter Outline<a class="headerlink" href="#chapter-outline" title="Permalink to this headline">¶</a></h2>
-<hr><div class="toc"><ul class="toc-item"><li><span><a href="#chapter-learning-objectives" data-toc-modified-id="Chapter-Learning-Objectives-2">Chapter Learning Objectives</a></span></li><li><span><a href="#imports" data-toc-modified-id="Imports-3">Imports</a></span></li><li><span><a href="#autoencoders" data-toc-modified-id="1.-Autoencoders-4">1. Autoencoders</a></span></li><li><span><a href="#generative-adversarial-networks-gans" data-toc-modified-id="2.-Generative-Adversarial-Networks-(GANs)-5">2. Generative Adversarial Networks (GANs)</a></span></li><li><span><a href="#multi-input-networks" data-toc-modified-id="3.-Multi-input-Networks-6">3. Multi-input Networks</a></span></li><li><span><a href="#things-i-haven't-talked-about" data-toc-modified-id="4.-Things-I-Haven't-Talked-About-7">4. Things I Haven't Talked About</a></span></li><li><span><a href="#tom's-cheat-sheet" data-toc-modified-id="5.-Tom's-Cheat-Sheet-8">5. Tom's Cheat Sheet</a></span></li></ul></div></div>
+<hr><div class="toc"><ul class="toc-item"><li><span><a href="#chapter-learning-objectives" data-toc-modified-id="Chapter-Learning-Objectives-2">Chapter Learning Objectives</a></span></li><li><span><a href="#imports" data-toc-modified-id="Imports-3">Imports</a></span></li><li><span><a href="#autoencoders" data-toc-modified-id="1.-Autoencoders-4">1. Autoencoders</a></span></li><li><span><a href="#generative-adversarial-networks-gans" data-toc-modified-id="2.-Generative-Adversarial-Networks-(GANs)-5">2. Generative Adversarial Networks (GANs)</a></span></li><li><span><a href="#multi-input-networks" data-toc-modified-id="3.-Multi-input-Networks-6">3. Multi-input Networks</a></span></li><li><span><a href="#things-i-havent-talked-about" data-toc-modified-id="4.-Things-I-Haven't-Talked-About-7">4. Things I Haven't Talked About</a></span></li><li><span><a href="#toms-cheat-sheet" data-toc-modified-id="5.-Tom's-Cheat-Sheet-8">5. Tom's Cheat Sheet</a></span></li></ul></div></div>
 <div class="section" id="chapter-learning-objectives">
 <h2>Chapter Learning Objectives<a class="headerlink" href="#chapter-learning-objectives" title="Permalink to this headline">¶</a></h2>
 <hr><ul class="simple">
@@ -957,8 +957,6 @@ if (outputEl) {{
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lists to keep track of progress</span>
 <span class="n">img_list</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">gen_losses</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">dis_losses</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">ITERS</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Begin training...&quot;</span><span class="p">)</span>
@@ -998,21 +996,21 @@ if (outputEl) {{
         <span class="c1"># Update generator weights and store loss</span>
         <span class="n">optimizerG</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         
-        <span class="c1"># Metadata</span>
-        <span class="n">gen_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_gen</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
-        <span class="n">dis_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_dis</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
         
+        <span class="c1">### Print performance info every 50 iterations (weight updates)</span>
         <span class="k">if</span> <span class="n">ITERS</span> <span class="o">%</span> <span class="mi">50</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch (</span><span class="si">{</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">NUM_EPOCHS</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
                   <span class="sa">f</span><span class="s2">&quot;Iteration (</span><span class="si">{</span><span class="n">ITERS</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
                   <span class="sa">f</span><span class="s2">&quot;Loss_G: </span><span class="si">{</span><span class="n">loss_gen</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                   <span class="sa">f</span><span class="s2">&quot;Loss_D: </span><span class="si">{</span><span class="n">loss_dis</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                  <span class="sa">f</span><span class="s2">&quot;D_real: </span><span class="si">{</span><span class="n">D_real</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># this should start around 1 and go down to 0.5 over time</span>
-                  <span class="sa">f</span><span class="s2">&quot;D_fake: </span><span class="si">{</span><span class="n">D_fake</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># this should start around 0 and go up to 0.5 over time</span>
+                  <span class="sa">f</span><span class="s2">&quot;D_real: </span><span class="si">{</span><span class="n">D_real</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># this should start around 1 and go down to 0.5 over time because</span>
+                                            <span class="c1"># the discriminator can easily tell real images are real at first,</span>
+                                            <span class="c1"># but as the generator gets better, the discriminator becomes unsure</span>
+                  <span class="sa">f</span><span class="s2">&quot;D_fake: </span><span class="si">{</span><span class="n">D_fake</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># this should start around 0 and go up to 0.5 over time, see above.</span>
 
         <span class="n">ITERS</span> <span class="o">+=</span> <span class="mi">1</span>
     
-    <span class="c1">### Store loss and track image evolution</span>
+    <span class="c1">### Keep a record of image generation as epochs progress</span>
     <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="n">fake_images</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">fixed_noise</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>

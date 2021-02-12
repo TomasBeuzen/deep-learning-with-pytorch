@@ -897,6 +897,8 @@ if (outputEl) {{
         <span class="n">valid_batch_loss</span> <span class="o">=</span> <span class="mi">0</span>
         
         <span class="c1"># Training</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>  <span class="c1"># This puts the model in &quot;training mode&quot;, this is the default mode.</span>
+                       <span class="c1"># We&#39;ll use a different mode, &quot;evaluation mode&quot;, for validation.</span>
         <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">trainloader</span><span class="p">:</span>
             <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>       <span class="c1"># Zero all the gradients w.r.t. parameters</span>
             <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># Forward pass to get output</span>
@@ -907,6 +909,9 @@ if (outputEl) {{
         <span class="n">train_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_batch_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">))</span>  <span class="c1"># loss = total loss in epoch / number of batches = loss per batch</span>
         
         <span class="c1"># Validation</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>  <span class="c1"># This puts the model in &quot;evaluation mode&quot;. It&#39;s important to do this when our model</span>
+                       <span class="c1"># includes some randomness like dropout layers which we&#39;ll see later. It turns off </span>
+                       <span class="c1"># this randomness for validation purposes.</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>  <span class="c1"># this stops pytorch doing computational graph stuff under-the-hood and saves memory and time</span>
             <span class="k">for</span> <span class="n">X_valid</span><span class="p">,</span> <span class="n">y_valid</span> <span class="ow">in</span> <span class="n">validloader</span><span class="p">:</span>
                 <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X_valid</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># Forward pass to get output</span>
