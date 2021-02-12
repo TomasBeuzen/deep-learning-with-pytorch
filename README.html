@@ -80,6 +80,44 @@
   <meta name="twitter:description" content="An introduction to using Python and PyTorch for deep learning." />
   <meta name="twitter:image" content="https://www.tomasbeuzen.com/deep-learning-with-pytorch/_static/logo.png" />
 
+  <!-- Tracking -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157992550-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    function trackOutboundLink(url, target) {
+      gtag('event', 'click', {
+        'event_category': 'outbound',
+        'event_label': url,
+        'transport_type': 'beacon',
+        'event_callback': function () {
+          if (target !== '_blank') {
+            document.location = url;
+          }
+        }
+      });
+      console.debug("Outbound link clicked: " + url);
+    }
+
+    function onClickCallback(event) {
+      if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+        return;
+      }
+      trackOutboundLink(event.target, event.target.getAttribute('target'));
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-157992550-2', {});
+
+
+    document.addEventListener('click', onClickCallback, false);
+  </script>
+
+
 </head>
 
 <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
