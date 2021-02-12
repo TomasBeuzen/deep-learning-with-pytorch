@@ -12,7 +12,7 @@ name: DLwPT
 ```
 
 ```{hint}
-If you're interested in learning more about Python programming - you can check out my other online material [Python Programming for Data Science](https://www.tomasbeuzen.com/python-programming-for-data-science/README.html).
+If you're interested in learning more about Python programming, you can check out my other online material [**Python Programming for Data Science**](https://www.tomasbeuzen.com/python-programming-for-data-science/). Or, if you'd like to learn more about making your very own Python packages, check out my and [Tiffany Timber's](https://www.tiffanytimbers.com/) open-source book [**Python Packages**](https://py-pkgs.org/).
 ```
 
 ```{admonition} Attribution
