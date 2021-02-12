@@ -4,8 +4,12 @@ author: Tomas Beuzen
 copyright: "2021" 
 logo: docs/logo.png
 
+
 repository:
-  url: https://github.com/TomasBeuzen/deep-learning-with-pytorch
+  url: https://github.com/TomasBeuzen/deep-learning-with-pytorch # The URL to your book's repository
+  path_to_book: ""
+  branch: main  # Which branch of the repository should be used when creating links
+
 
 sphinx:
   config:
@@ -31,4 +35,4 @@ html:
   extra_footer              : ""  # Will be displayed underneath the footer.
   google_analytics_id       : ""  # A GA id that can be used to track book views.
   home_page_in_navbar       : true  # Whether to include your home page in the left Navigation Bar
-  baseurl                   : ""  # The base URL where your book will be hosted. Used for creating image previews and social links. e.g.: https://mypage.com/mybook/
+  baseurl                   : "https://www.tomasbeuzen.com/deep-learning-with-pytorch/"  # The base URL where your book will be hosted. Used for creating image previews and social links. e.g.: https://mypage.com/mybook/
